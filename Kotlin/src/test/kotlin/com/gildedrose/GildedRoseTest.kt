@@ -26,12 +26,26 @@ class GildedRoseTest {
         }
     }
 
+    @Test
+    fun `generic items lose quality by 1`() {
+        val item = updateQuality(Item(GENERIC_NAME, 10,5))
+        with(item) {
+            assertThat(name).isEqualTo(GENERIC_NAME)
+            assertThat(sellIn).isEqualTo(9)
+            assertThat(quality).isEqualTo(4)
+        }
+    }
+
 
     fun updateQuality(item:Item):Item {
         val items = arrayOf(item)
         val app = GildedRose(items)
         app.updateQuality()
         return app.items[0]
+    }
+
+    companion object {
+        const val GENERIC_NAME = "Some generic product"
     }
 
 }
