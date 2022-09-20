@@ -17,10 +17,25 @@ class SulfurusUpdater() {
 class BrieUpdater() {
     fun updateQuality(item: Item) {
         with(item) {
-            item.sellIn -= 1
-            item.quality += 1
-            if (item.sellIn < 0) item.quality += 1
-            if (item.quality > MAX_NORMAL_QUALITY) item.quality = MAX_NORMAL_QUALITY
+            sellIn -= 1
+            quality += 1
+            if (sellIn < 0) quality += 1
+            if (quality > MAX_NORMAL_QUALITY) quality = MAX_NORMAL_QUALITY
+        }
+    }
+}
+
+class BackstageUpdater {
+    fun updateQuality(item: Item) {
+        with(item) {
+            sellIn -= 1
+            if (sellIn < 0) quality = 0
+            else {
+                quality += 1
+                if (sellIn < BACKSTAGE_FIRST_UPGRADE) quality += 1
+                if (sellIn < BACKSTAGE_SECOND_UPGRADE) quality += 1
+            }
+            if (quality > MAX_NORMAL_QUALITY) quality = MAX_NORMAL_QUALITY
         }
     }
 }
@@ -29,6 +44,7 @@ class GildedRose(var items: Array<Item>) {
 
     private val sulfurusUpdater = SulfurusUpdater()
     private val brieUpdater = BrieUpdater()
+    private val backstageUpdater = BackstageUpdater()
 
     fun updateQuality() {
         for (item in items) {
@@ -44,6 +60,10 @@ class GildedRose(var items: Array<Item>) {
             }
             if (name == BRIE_NAME) {
                 brieUpdater.updateQuality(item)
+                return
+            }
+            if (name == BACKSTAGE_NAME) {
+                backstageUpdater.updateQuality(item)
                 return
             }
             if (name != BRIE_NAME && name != BACKSTAGE_NAME) {
