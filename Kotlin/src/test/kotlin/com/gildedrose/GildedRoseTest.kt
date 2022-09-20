@@ -62,6 +62,25 @@ class GildedRoseTest {
         assertBeforeAndAfter(BACKSTAGE_NAME,5, MAX_NORMAL_QUALITY,4, MAX_NORMAL_QUALITY)
     }
 
+    @Test
+    fun `pre-date brie goes up 1 in quality`() {
+        assertBeforeAndAfter(BRIE_NAME,1,10,0,11)
+    }
+
+    @Test
+    fun `post-date brie quality goes up by 2`() {
+        assertBeforeAndAfter(BRIE_NAME,0, 20,-1, 22)
+    }
+
+    @Test
+    fun `post-date brie quality never goes past MAX_NORMAL_QUALITY`() {
+        assertBeforeAndAfter(BRIE_NAME,0, MAX_NORMAL_QUALITY,-1, MAX_NORMAL_QUALITY)
+    }
+
+    @Test
+    fun `brie quality never goes past MAX_NORMAL_QUALITY`() {
+        assertBeforeAndAfter(BRIE_NAME,5, MAX_NORMAL_QUALITY,4, MAX_NORMAL_QUALITY)
+    }
 
     fun assertBeforeAndAfter(beforeName:String,beforeSellin:Int,beforeQuality:Int,afterSellin:Int,afterQuality:Int) {
         updateQuality(Item(beforeName,beforeSellin,beforeQuality)).apply {
