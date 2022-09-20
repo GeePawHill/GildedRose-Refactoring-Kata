@@ -8,34 +8,27 @@ class GildedRoseTest {
 
     @Test
     fun `sulfuras never changes`() {
-        val item = updateQuality(Item(SULFURUS_NAME, Int.MAX_VALUE, 80))
-        with(item) {
-            assertThat(name).isEqualTo(SULFURUS_NAME)
-            assertThat(sellIn).isEqualTo(Int.MAX_VALUE)
-            assertThat(quality).isEqualTo(80)
-        }
+        assertBeforeAndAfter(SULFURUS_NAME, Int.MAX_VALUE, 80, Int.MAX_VALUE,80)
     }
 
     @Test
     fun `sulfuras never changes even with weird values`() {
-        val item = updateQuality(Item(SULFURUS_NAME, -1, -3))
-        with(item) {
-            assertThat(name).isEqualTo(SULFURUS_NAME)
-            assertThat(sellIn).isEqualTo(-1)
-            assertThat(quality).isEqualTo(-3)
-        }
+        // NOTE: Gilded rose does not enforce quality or sellin for sulfuras
+        assertBeforeAndAfter(SULFURUS_NAME,-1,-3,-1,-3)
     }
 
     @Test
-    fun `generic items lose quality by 1`() {
-        val item = updateQuality(Item(GENERIC_NAME, 10,5))
-        with(item) {
-            assertThat(name).isEqualTo(GENERIC_NAME)
-            assertThat(sellIn).isEqualTo(9)
-            assertThat(quality).isEqualTo(4)
-        }
+    fun `generic salable items lose quality by 1`() {
+        assertBeforeAndAfter(GENERIC_NAME,10,5,9,4)
     }
 
+    fun assertBeforeAndAfter(beforeName:String,beforeSellin:Int,beforeQuality:Int,afterSellin:Int,afterQuality:Int) {
+        updateQuality(Item(beforeName,beforeSellin,beforeQuality)).apply {
+            assertThat(name).isEqualTo(beforeName)
+            assertThat(sellIn).isEqualTo(afterSellin)
+            assertThat(quality).isEqualTo(afterQuality)
+        }
+    }
 
     fun updateQuality(item:Item):Item {
         val items = arrayOf(item)
