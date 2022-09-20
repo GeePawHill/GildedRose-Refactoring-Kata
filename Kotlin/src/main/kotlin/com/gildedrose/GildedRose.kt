@@ -10,13 +10,25 @@ const val BACKSTAGE_FIRST_UPGRADE = 11
 const val BACKSTAGE_SECOND_UPGRADE = 6
 
 class SulfurusUpdater() {
-    fun updateQuality(item:Item) {
+    fun updateQuality(item: Item) {
+    }
+}
+
+class BrieUpdater() {
+    fun updateQuality(item: Item) {
+        with(item) {
+            item.sellIn -= 1
+            item.quality += 1
+            if (item.sellIn < 0) item.quality += 1
+            if (item.quality > MAX_NORMAL_QUALITY) item.quality = MAX_NORMAL_QUALITY
+        }
     }
 }
 
 class GildedRose(var items: Array<Item>) {
 
     private val sulfurusUpdater = SulfurusUpdater()
+    private val brieUpdater = BrieUpdater()
 
     fun updateQuality() {
         for (item in items) {
@@ -26,8 +38,12 @@ class GildedRose(var items: Array<Item>) {
 
     fun updateQuality(item: Item) {
         with(item) {
-            if(name== SULFURUS_NAME) {
+            if (name == SULFURUS_NAME) {
                 sulfurusUpdater.updateQuality(item)
+                return
+            }
+            if (name == BRIE_NAME) {
+                brieUpdater.updateQuality(item)
                 return
             }
             if (name != BRIE_NAME && name != BACKSTAGE_NAME) {
