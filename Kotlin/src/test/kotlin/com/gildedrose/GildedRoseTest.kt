@@ -18,8 +18,23 @@ class GildedRoseTest {
     }
 
     @Test
-    fun `generic salable items lose quality by 1`() {
+    fun `generic pre-date items lose quality by 1`() {
         assertBeforeAndAfter(GENERIC_NAME,10,5,9,4)
+    }
+
+    @Test
+    fun `generic pre-date items quality bottoms out at 0`() {
+        assertBeforeAndAfter(GENERIC_NAME,10,0,9,0)
+    }
+
+    @Test
+    fun `generic post-date items quality drops by 2 at sellin day`() {
+        assertBeforeAndAfter(GENERIC_NAME,0,10,-1,8)
+    }
+
+    @Test
+    fun `generic post-date items quality bottoms out at 0 even after sellin day`() {
+        assertBeforeAndAfter(GENERIC_NAME,-5,0,-6,0)
     }
 
     fun assertBeforeAndAfter(beforeName:String,beforeSellin:Int,beforeQuality:Int,afterSellin:Int,afterQuality:Int) {
