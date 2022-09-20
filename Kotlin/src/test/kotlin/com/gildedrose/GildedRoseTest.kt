@@ -37,6 +37,32 @@ class GildedRoseTest {
         assertBeforeAndAfter(GENERIC_NAME,-5,0,-6,0)
     }
 
+    @Test
+    fun `post-date backstage has quality 0`() {
+        assertBeforeAndAfter(BACKSTAGE_NAME,0,30,-1,0)
+    }
+
+    @Test
+    fun `pre-date backstage quality goes up by 1`() {
+        assertBeforeAndAfter(BACKSTAGE_NAME,20,30,19,31)
+    }
+
+    @Test
+    fun `pre-date backstage quality goes up by 2 at 10 days out`() {
+        assertBeforeAndAfter(BACKSTAGE_NAME,10,30,9,32)
+    }
+
+    @Test
+    fun `pre-date backstage quality goes up by 3 at 5 days out`() {
+        assertBeforeAndAfter(BACKSTAGE_NAME,5,30,4,33)
+    }
+
+    @Test
+    fun `pre-date backstage quality never goes past MAX_NORMAL_QUALITY`() {
+        assertBeforeAndAfter(BACKSTAGE_NAME,5, MAX_NORMAL_QUALITY,4, MAX_NORMAL_QUALITY)
+    }
+
+
     fun assertBeforeAndAfter(beforeName:String,beforeSellin:Int,beforeQuality:Int,afterSellin:Int,afterQuality:Int) {
         updateQuality(Item(beforeName,beforeSellin,beforeQuality)).apply {
             assertThat(name).isEqualTo(beforeName)
