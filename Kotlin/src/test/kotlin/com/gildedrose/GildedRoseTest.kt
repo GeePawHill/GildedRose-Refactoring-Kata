@@ -8,12 +8,30 @@ class GildedRoseTest {
 
     @Test
     fun `sulfuras never changes`() {
-        val items = arrayOf(Item(SULFURUS_NAME, Int.MAX_VALUE, 80))
+        val item = updateQuality(Item(SULFURUS_NAME, Int.MAX_VALUE, 80))
+        with(item) {
+            assertThat(name).isEqualTo(SULFURUS_NAME)
+            assertThat(sellIn).isEqualTo(Int.MAX_VALUE)
+            assertThat(quality).isEqualTo(80)
+        }
+    }
+
+    @Test
+    fun `sulfuras never changes even with weird values`() {
+        val item = updateQuality(Item(SULFURUS_NAME, -1, -3))
+        with(item) {
+            assertThat(name).isEqualTo(SULFURUS_NAME)
+            assertThat(sellIn).isEqualTo(-1)
+            assertThat(quality).isEqualTo(-3)
+        }
+    }
+
+
+    fun updateQuality(item:Item):Item {
+        val items = arrayOf(item)
         val app = GildedRose(items)
         app.updateQuality()
-        assertThat(items[0].name).isEqualTo(SULFURUS_NAME)
-        assertThat(items[0].sellIn).isEqualTo(Int.MAX_VALUE)
-        assertThat(items[0].quality).isEqualTo(80)
+        return app.items[0]
     }
 
 }
