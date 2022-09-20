@@ -9,24 +9,24 @@ const val MAX_NORMAL_QUALITY = 50
 const val BACKSTAGE_FIRST_UPGRADE = 11
 const val BACKSTAGE_SECOND_UPGRADE = 6
 
-class SulfurusUpdater() {
-    fun updateQuality(item: Item) {
-    }
-}
+class GildedRose(var items: Array<Item>) {
 
-class BrieUpdater() {
+    fun updateQuality() {
+        items.forEach { updateQuality(it) }
+    }
+
     fun updateQuality(item: Item) {
         with(item) {
-            sellIn -= 1
-            quality += 1
-            if (sellIn < 0) quality += 1
-            if (quality > MAX_NORMAL_QUALITY) quality = MAX_NORMAL_QUALITY
+            when (name) {
+                SULFURUS_NAME -> return
+                BRIE_NAME -> updateBrie(item)
+                BACKSTAGE_NAME -> updateBackstage(item)
+                else -> updateGeneric(item)
+            }
         }
     }
-}
 
-class BackstageUpdater {
-    fun updateQuality(item: Item) {
+    fun updateBackstage(item: Item) {
         with(item) {
             sellIn -= 1
             if (sellIn < 0) quality = 0
@@ -38,40 +38,22 @@ class BackstageUpdater {
             if (quality > MAX_NORMAL_QUALITY) quality = MAX_NORMAL_QUALITY
         }
     }
-}
 
-class GenericUpdater {
-    fun updateQuality(item: Item) {
+    fun updateBrie(item: Item) {
+        with(item) {
+            sellIn -= 1
+            quality += 1
+            if (sellIn < 0) quality += 1
+            if (quality > MAX_NORMAL_QUALITY) quality = MAX_NORMAL_QUALITY
+        }
+    }
+
+    fun updateGeneric(item: Item) {
         with(item) {
             sellIn -= 1
             quality -= 1
             if (sellIn < 0) quality -= 1
             if (quality < 0) quality = 0
-        }
-    }
-}
-
-class GildedRose(var items: Array<Item>) {
-
-    private val sulfurusUpdater = SulfurusUpdater()
-    private val brieUpdater = BrieUpdater()
-    private val backstageUpdater = BackstageUpdater()
-    private val genericUpdater = GenericUpdater()
-
-    fun updateQuality() {
-        for (item in items) {
-            updateQuality(item)
-        }
-    }
-
-    fun updateQuality(item: Item) {
-        with(item) {
-            when (name) {
-                SULFURUS_NAME -> sulfurusUpdater.updateQuality(item)
-                BRIE_NAME -> brieUpdater.updateQuality(item)
-                BACKSTAGE_NAME -> backstageUpdater.updateQuality(item)
-                else -> genericUpdater.updateQuality(item)
-            }
         }
     }
 }
