@@ -3,6 +3,7 @@ package com.gildedrose
 const val SULFURUS_NAME = "Sulfuras, Hand of Ragnaros"
 const val BRIE_NAME = "Aged Brie"
 const val BACKSTAGE_NAME = "Backstage passes to a TAFKAL80ETC concert"
+const val CONJURED_NAME = "Conjured"
 
 const val MAX_NORMAL_QUALITY = 50
 
@@ -21,6 +22,7 @@ class GildedRose(var items: Array<Item>) {
                 SULFURUS_NAME -> return
                 BRIE_NAME -> updateBrie(item)
                 BACKSTAGE_NAME -> updateBackstage(item)
+                CONJURED_NAME -> updateConjured(item)
                 else -> updateGeneric(item)
             }
         }
@@ -53,6 +55,15 @@ class GildedRose(var items: Array<Item>) {
             sellIn -= 1
             quality -= 1
             if (sellIn < 0) quality -= 1
+            if (quality < 0) quality = 0
+        }
+    }
+
+    fun updateConjured(item: Item) {
+        with(item) {
+            sellIn -= 1
+            quality -= 2
+            if (sellIn < 0) quality -= 2
             if (quality < 0) quality = 0
         }
     }
