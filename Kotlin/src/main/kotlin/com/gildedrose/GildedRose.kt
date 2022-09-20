@@ -9,7 +9,14 @@ const val MAX_NORMAL_QUALITY = 50
 const val BACKSTAGE_FIRST_UPGRADE = 11
 const val BACKSTAGE_SECOND_UPGRADE = 6
 
+class SulfurusUpdater() {
+    fun updateQuality(item:Item) {
+    }
+}
+
 class GildedRose(var items: Array<Item>) {
+
+    private val sulfurusUpdater = SulfurusUpdater()
 
     fun updateQuality() {
         for (item in items) {
@@ -19,6 +26,10 @@ class GildedRose(var items: Array<Item>) {
 
     fun updateQuality(item: Item) {
         with(item) {
+            if(name== SULFURUS_NAME) {
+                sulfurusUpdater.updateQuality(item)
+                return
+            }
             if (name != BRIE_NAME && name != BACKSTAGE_NAME) {
                 if (quality > 0) {
                     if (name != SULFURUS_NAME) {
