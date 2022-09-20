@@ -33,39 +33,41 @@ class GildedRose(var items: Array<Item>) {
             sellIn -= 1
             if (sellIn < 0) quality = 0
             else {
-                quality += 1
-                if (sellIn < BACKSTAGE_FIRST_UPGRADE) quality += 1
-                if (sellIn < BACKSTAGE_SECOND_UPGRADE) quality += 1
+                adjustQuality(item, 1)
+                if (sellIn < BACKSTAGE_FIRST_UPGRADE) adjustQuality(item, 1)
+                if (sellIn < BACKSTAGE_SECOND_UPGRADE) adjustQuality(item, 1)
             }
-            if (quality > MAX_NORMAL_QUALITY) quality = MAX_NORMAL_QUALITY
         }
     }
 
     fun updateBrie(item: Item) {
         with(item) {
             sellIn -= 1
-            if (sellIn < 0) quality += 1
-            quality += 1
-            if (quality > MAX_NORMAL_QUALITY) quality = MAX_NORMAL_QUALITY
+            if (sellIn < 0) adjustQuality(item, 1)
+            adjustQuality(item, 1)
         }
     }
 
     fun updateGeneric(item: Item) {
         with(item) {
             sellIn -= 1
-            if (sellIn < 0) quality -= 1
-            quality -= 1
-            if (quality < 0) quality = 0
+            adjustQuality(item, -1)
+            if (sellIn < 0) adjustQuality(item, -1)
         }
     }
 
     fun updateConjured(item: Item) {
         with(item) {
             sellIn -= 1
-            if (sellIn < 0) quality -= 2
-            quality -= 2
-            if (quality < 0) quality = 0
+            if (sellIn < 0) adjustQuality(item, -2)
+            adjustQuality(this, -2)
         }
+    }
+
+    fun adjustQuality(item: Item, increment: Int) {
+        item.quality += increment
+        if (item.quality > MAX_NORMAL_QUALITY) item.quality = MAX_NORMAL_QUALITY
+        if (item.quality < 0) item.quality = 0
     }
 }
 
