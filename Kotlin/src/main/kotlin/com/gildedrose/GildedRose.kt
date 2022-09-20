@@ -44,8 +44,8 @@ class GildedRose(var items: Array<Item>) {
     fun updateBrie(item: Item) {
         with(item) {
             sellIn -= 1
-            quality += 1
             if (sellIn < 0) quality += 1
+            quality += 1
             if (quality > MAX_NORMAL_QUALITY) quality = MAX_NORMAL_QUALITY
         }
     }
@@ -53,8 +53,8 @@ class GildedRose(var items: Array<Item>) {
     fun updateGeneric(item: Item) {
         with(item) {
             sellIn -= 1
-            quality -= 1
             if (sellIn < 0) quality -= 1
+            quality -= 1
             if (quality < 0) quality = 0
         }
     }
@@ -62,8 +62,8 @@ class GildedRose(var items: Array<Item>) {
     fun updateConjured(item: Item) {
         with(item) {
             sellIn -= 1
-            quality -= 2
             if (sellIn < 0) quality -= 2
+            quality -= 2
             if (quality < 0) quality = 0
         }
     }
